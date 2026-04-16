@@ -2,7 +2,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Package & Install** - Package both mods, fix manifests, install locally so the game loads them
+- [x] **Phase 1: Package & Install** - Package both mods, fix manifests, install locally so the game loads them
 - [ ] **Phase 2: Verify & Debug** - Confirm distribution logic works in-game; fix any remaining API mismatches
 
 ---
@@ -18,11 +18,11 @@
   2. Both manifests list `"2.1.10"` in `compatible_game_version`
   3. The mod loader log shows no initialization errors for either mod
   4. Both mod windows appear in-game and accept connections
-**Plans:** 2/3 plans executed
+**Plans:** 3 plans
 Plans:
 - [x] 01-01-PLAN.md — Update both manifests to 2.1.10 (COMP-01) and verify CODE-02 in both source trees
 - [x] 01-02-PLAN.md — Package both mods as ZIPs (INST-01, INST-02) and install into game_dir/mods/ (INST-03, overrides D-01 per RESEARCH)
-- [ ] 01-03-PLAN.md — Launch game, verify COMP-02 via modloader.log, human checkpoint for D-06 conditions 3+4
+- [x] 01-03-PLAN.md — Launch game, verify COMP-02 via modloader.log, human checkpoint for D-06 conditions 3+4
 
 ### Phase 2: Verify & Debug
 **Goal**: Both mods correctly redistribute resources to downstream windows using all three distribution modes
@@ -33,7 +33,11 @@ Plans:
   2. SmartGPUManager redistributes `gpu_speed` to connected windows — downstream values change when the manager ticks
   3. Switching distribution modes (ratio, demand, graph) produces observably different allocation across windows
   4. Progress bar and demand label in each window UI update in real time
-**Plans**: TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 02-01-PLAN.md — Update manifests for 2.1.11, repackage, install, baseline distribution test
+- [ ] 02-02-PLAN.md — (Conditional) Add diagnostic instrumentation if baseline fails, capture log output
+- [ ] 02-03-PLAN.md — Add compatibility shims (D-05), repackage, full mode + edge case verification (D-07, D-08)
 
 ---
 
@@ -41,5 +45,5 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Package & Install | 2/3 | In Progress|  |
-| 2. Verify & Debug | 0/0 | Not started | - |
+| 1. Package & Install | 3/3 | Complete | 2026-04-16 |
+| 2. Verify & Debug | 0/3 | Ready | - |
