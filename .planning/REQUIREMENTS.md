@@ -3,9 +3,9 @@
 ## v1 Requirements
 
 ### Installation
-- [ ] **INST-01**: Package SmartThreadManager source into a loadable mod zip/folder
-- [ ] **INST-02**: Package SmartGPUManager source into a loadable mod zip/folder
-- [ ] **INST-03**: Install both mods into the game's local mods directory so they load without Steam Workshop
+- [x] **INST-01**: Package SmartThreadManager source into a loadable mod zip/folder
+- [x] **INST-02**: Package SmartGPUManager source into a loadable mod zip/folder
+- [x] **INST-03**: Install both mods into the game's local mods directory so they load without Steam Workshop
 
 ### Compatibility
 - [x] **COMP-01**: Update both manifests to include `"2.1.10"` in `compatible_game_version`
@@ -34,9 +34,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INST-01 | Phase 1 | Pending |
-| INST-02 | Phase 1 | Pending |
-| INST-03 | Phase 1 | Pending |
+| INST-01 | Phase 1 | Complete |
+| INST-02 | Phase 1 | Complete |
+| INST-03 | Phase 1 | Complete |
 | COMP-01 | Phase 1 | Complete |
 | COMP-02 | Phase 1 | Pending |
 | CODE-02 | Phase 1 | Complete |
