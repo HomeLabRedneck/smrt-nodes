@@ -18,7 +18,11 @@
   2. Both manifests list `"2.1.10"` in `compatible_game_version`
   3. The mod loader log shows no initialization errors for either mod
   4. Both mod windows appear in-game and accept connections
-**Plans**: TBD
+**Plans:** 1/3 plans executed
+Plans:
+- [x] 01-01-PLAN.md — Update both manifests to 2.1.10 (COMP-01) and verify CODE-02 in both source trees
+- [ ] 01-02-PLAN.md — Package both mods as ZIPs (INST-01, INST-02) and install into game_dir/mods/ (INST-03, overrides D-01 per RESEARCH)
+- [ ] 01-03-PLAN.md — Launch game, verify COMP-02 via modloader.log, human checkpoint for D-06 conditions 3+4
 
 ### Phase 2: Verify & Debug
 **Goal**: Both mods correctly redistribute resources to downstream windows using all three distribution modes
@@ -37,5 +41,5 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Package & Install | 0/0 | Not started | - |
+| 1. Package & Install | 1/3 | In Progress|  |
 | 2. Verify & Debug | 0/0 | Not started | - |

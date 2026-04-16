@@ -8,7 +8,7 @@
 - [ ] **INST-03**: Install both mods into the game's local mods directory so they load without Steam Workshop
 
 ### Compatibility
-- [ ] **COMP-01**: Update both manifests to include `"2.1.10"` in `compatible_game_version`
+- [x] **COMP-01**: Update both manifests to include `"2.1.10"` in `compatible_game_version`
 - [ ] **COMP-02**: Both mods must initialize without errors in the mod loader log
 
 ### Functionality
@@ -19,7 +19,7 @@
 
 ### Code Integrity
 - [ ] **CODE-01**: If any game API changed since Feb 2026 (game updated past 2.1.10), identify and fix all mismatches using GDRETools decompilation
-- [ ] **CODE-02**: `smart_resource_container.gd` uses `extends ResourceContainer` (already correct in v2.1.5)
+- [x] **CODE-02**: `smart_resource_container.gd` uses `extends ResourceContainer` (already correct in v2.1.5)
 
 ## v2 Requirements (Deferred)
 - Merge SmartThreadManager and SmartGPUManager into one mod
@@ -37,9 +37,9 @@
 | INST-01 | Phase 1 | Pending |
 | INST-02 | Phase 1 | Pending |
 | INST-03 | Phase 1 | Pending |
-| COMP-01 | Phase 1 | Pending |
+| COMP-01 | Phase 1 | Complete |
 | COMP-02 | Phase 1 | Pending |
-| CODE-02 | Phase 1 | Pending |
+| CODE-02 | Phase 1 | Complete |
 | FUNC-01 | Phase 2 | Pending |
 | FUNC-02 | Phase 2 | Pending |
 | FUNC-03 | Phase 2 | Pending |
