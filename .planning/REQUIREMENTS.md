@@ -31,8 +31,17 @@
 - Publishing back to Steam Workshop (user's choice)
 
 ## Traceability
-| Requirement | Phase |
-|-------------|-------|
-| INST-01, INST-02, INST-03 | Phase 1 |
-| COMP-01, COMP-02 | Phase 1 |
-| FUNC-01–04, CODE-01–02 | Phase 2 |
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| INST-01 | Phase 1 | Pending |
+| INST-02 | Phase 1 | Pending |
+| INST-03 | Phase 1 | Pending |
+| COMP-01 | Phase 1 | Pending |
+| COMP-02 | Phase 1 | Pending |
+| CODE-02 | Phase 1 | Pending |
+| FUNC-01 | Phase 2 | Pending |
+| FUNC-02 | Phase 2 | Pending |
+| FUNC-03 | Phase 2 | Pending |
+| FUNC-04 | Phase 2 | Pending |
+| CODE-01 | Phase 2 | Pending |
