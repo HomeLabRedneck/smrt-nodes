@@ -8,7 +8,8 @@
 			],
 			"compatible_game_version": [
 				"2.1.8",
-				"2.1.10"
+				"2.1.10",
+				"2.1.11"
 			],
 			"compatible_mod_loader_version": [
 				"7.0.0",
