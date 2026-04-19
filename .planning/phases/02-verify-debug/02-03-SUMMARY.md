@@ -26,18 +26,20 @@ key_files:
 decisions:
   - "Relaxed _update_wdata() parameter type from Array[ResourceContainer] to Array to allow shim-guarded assignment"
   - "ZIP repackaged with .NET ZipArchive forward-slash paths (vs prior Compress-Archive backslash) — more portable"
-  - "Task 3 is a human checkpoint — 14-point in-game verification matrix awaiting human execution"
+  - "Removed count-based demand fallback — inputs[n].count as demand proxy creates feedback loop in Graph mode"
+  - "Pure-storage windows (single resource input from STM) get equal distribution in all modes — by design, not a bug"
+  - "[STM-DIAG] prints in godot.log come from Upload Labs.exe binary, NOT the mod — grep confirmed"
 metrics:
-  duration: "~3 minutes"
+  duration: "~45 minutes"
   completed: "2026-04-19"
-  tasks_completed: 2
+  tasks_completed: 3
   tasks_total: 3
-  files_modified: 6
+  files_modified: 7
 ---
 
 # Phase 02 Plan 03: Compatibility Shims, Diagnostics Removal, and Repackage Summary
 
-**Compatibility shims added to both mods (has()/get() guards on all game API property accesses), diagnostic prints removed, both mods repackaged with .NET ZipArchive (forward-slash paths) and installed — awaiting human 14-point in-game verification.**
+**Compatibility shims added to both mods, graph mode feedback-loop bug fixed, diagnostic prints removed, both mods repackaged and installed — all 14 verification conditions passed.**
 
 ---
 
@@ -107,9 +109,40 @@ Spot-check: extracted `smart_resource_container.gd` from STM ZIP confirmed `"tra
 
 ---
 
-## Task 3: Awaiting Human Checkpoint
+## Graph Mode Bug Fix (de027d4)
 
-Task 3 is `type="checkpoint:human-verify"` (gate: blocking). The 14-point in-game verification matrix must be executed by a human player. See checkpoint details below.
+Discovered during verification: switching to Graph mode caused demand to drop to 0Hz, and switching back to Demand mode left demand stuck at 0.
+
+**Root cause:** `get_demand()` and `get_count_demand()` in `stm_window_data.gd` used `inputs[n].count` as demand proxy when `required` was unavailable. Graph mode reduces allocation → count drops → demand drops → even less allocation → feedback loop stabilizing near 0.
+
+**Fix:** Removed count-based fallback. Now falls back to `1.0` constant instead.
+
+SGM unaffected — uses goal-based demand (different architecture, no feedback loop).
+
+---
+
+## Task 3: 14-Point Verification Results
+
+All 14 conditions passed (2026-04-19).
+
+| # | Condition | Result | Notes |
+|---|-----------|--------|-------|
+| 1 | STM Ratio mode | ✅ | Equal shares, progress bar non-zero |
+| 2 | STM Demand mode | ✅ | Proportional with multi-resource windows (Virus Scanner, Quarantine) |
+| 3 | STM Graph mode | ✅ | Real Hz demand, no 0Hz stuck |
+| 4 | STM Progress bar + demand label | ✅ | Updates live, non-zero |
+| 5 | STM 0 upstream | ✅ | No crash |
+| 6 | STM Single downstream | ✅ | Gets 100% |
+| 7 | STM Empty graph | ✅ | No crash, distributes equally |
+| 8 | SGM Ratio mode | ✅ | Equal shares, progress bar non-zero |
+| 9 | SGM Demand mode | ✅ | Correct for window type (Miner, Scheduler are single-resource → equal by design) |
+| 10 | SGM Graph mode | ✅ | Working |
+| 11 | SGM Progress bar + demand label | ✅ | Updates live |
+| 12 | SGM 0 upstream | ✅ | No crash |
+| 13 | SGM Single downstream | ✅ | Gets 100% |
+| 14 | SGM Empty graph | ✅ | No crash |
+
+**Behavior note:** Demand and Graph modes distribute equally when downstream windows have only ONE resource input (all from STM). This is correct — those windows are classified `STM_STORAGE` and receive equal shares of remainder. Modes differentiate when windows have additional non-STM resource dependencies (e.g. Virus Scanner, Quarantine for STM).
 
 ---
 

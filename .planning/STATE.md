@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-last_updated: "2026-04-19T14:00:19.740Z"
+status: Complete
+last_updated: "2026-04-19T00:00:00.000Z"
 progress:
   total_phases: 2
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 3
-  percent: 50
+  completed_plans: 6
+  percent: 100
 ---
 
 # Project State — Upload Labs Smrt Nodes Mod Fix
@@ -23,12 +23,10 @@ progress:
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-**Phase**: 1 — Package & Install
-**Plan**: Plan 02 complete, Plan 03 next
-**Status**: Executing
-**Progress**: [███████░░░] 67%
+Phase: 2 — COMPLETE
+Plan: All plans complete
+**Status**: Done
+**Progress**: [██████████] 100%
 
 ---
 
@@ -37,9 +35,9 @@ Plan: Not started
 | Metric | Value |
 |--------|-------|
 | Phases total | 2 |
-| Phases complete | 0 |
+| Phases complete | 2 |
 | Requirements total | 10 |
-| Requirements complete | 0 |
+| Requirements complete | 10 |
 
 ## Performance Metrics (detail)
 
@@ -47,37 +45,38 @@ Plan: Not started
 |------|----------|-------|-------|
 | Phase 01 P01 | 5m | 2 tasks | 2 files |
 | Phase 01 P02 | 5m | 2 tasks | 4 files |
+| Phase 02 P01 | ~10m | 3 tasks | manifests + ZIPs |
+| Phase 02 P02 | ~15m | 3 tasks | smart_resource_container.gd x2 |
+| Phase 02 P03 | ~45m | 3 tasks | shims + graph fix + verification |
 
 ## Accumulated Context
 
 ### Key Decisions
 
-- v2.1.5 source already uses `extends ResourceContainer` — CODE-02 is satisfied at source level, just needs verification after install
-- Mods must be installed locally (not via Steam Workshop) — Workshop files were deleted from disk
-- Fix both mods in parallel — they share the same `smart_resource_container.gd` pattern
-- D-01 override implemented — ZIP install to mods/ replaces loose-folder copy to mods-unpacked/ per RESEARCH.md log evidence
+- `connection_out_set` signal hook + tick fallback = core fix. `update_connections()` was not firing on load; signal hook ensures it fires when outputs are set.
+- ZIP base = mod parent directory (e.g. `Smrt Thread Manager/`), NOT `mods-unpacked/`. Wrong base silently breaks mod loader.
+- `.NET ZipArchive` with `path.Replace('\','/')` required — never `Compress-Archive` (backslash paths).
+- `state.demand = value` when no consumers (storage-only) — progress bar shows available resource.
+- count-based demand fallback removed — `inputs[n].count` as proxy creates feedback loop in Graph mode. Use `required` if available, else `1.0` constant.
+- Pure-storage windows (single resource input from STM) get equal distribution in all modes — by design.
+- `[STM-DIAG]` prints in godot.log come from `Upload Labs.exe` binary, NOT the mod.
+- Both mods share same fix pattern — applied in parallel throughout.
 
 ### Known Facts
 
 - Game install: `D:/Program Files (x86)/Steam/steamapps/common/Upload Labs/`
-- SmartThreadManager source: `C:/Users/Jake/Projects/Upload Smrt Nodes/Smrt Thread Manager/mods-unpacked/kuuk-SmartThreadManager/`
-- SmartGPUManager source: `C:/Users/Jake/Projects/Upload Smrt Nodes/Smrt GPU Manager/mods-unpacked/kuuk-SmartGPUManager/`
-- Reference source (correct API): `C:/Users/Jake/Projects/Upload Smrt Nodes/ul-stmmod-2.1.5/`
-- Symptom: mods initialize fine, windows appear, but `smart_resource_container.tick()` does nothing
+- STM installed: `D:/Program Files (x86)/Steam/steamapps/common/Upload Labs/mods/kuuk-SmartThreadManager.zip`
+- SGM installed: `D:/Program Files (x86)/Steam/steamapps/common/Upload Labs/mods/kuuk-SmartGPUManager.zip`
+- Demand/Graph modes differentiate only when downstream windows have multi-resource dependencies (e.g. Virus Scanner, Quarantine for STM)
 
 ### Blockers
 
-None currently.
-
-### Open Questions
-
-- Exact local mods directory path under the game install (confirm before Phase 1 plan executes)
-- Whether game has updated past 2.1.10 since February 2026 (drives CODE-01 scope)
+None. Project complete.
 
 ---
 
 ## Session Continuity
 
-**Last updated**: 2026-04-16
-**Last action**: Completed 01-02-PLAN.md — mods packaged as ZIPs and installed to game_dir/mods/
-**Next action**: Execute 01-03-PLAN.md (launch verification)
+**Last updated**: 2026-04-19
+**Last action**: Phase 2 Plan 03 complete — all 14 verification conditions passed. Both mods working in 2.1.10.
+**Next action**: None — milestone complete.
