@@ -27,8 +27,7 @@ func _init(window: WindowBase) -> void:
 
     if "demand" in window:
         role = STMWindowRoles.STM_MANAGER
-    #dependent.is_empty() is a temporary solution so miners will work
-    elif "goal" in window && !dependent.is_empty():
+    elif !dependent.is_empty():
         role = STMWindowRoles.STM_CONSUMER
     elif window.is_in_group("window"):
         role = STMWindowRoles.STM_STORAGE
@@ -39,7 +38,7 @@ func _init(window: WindowBase) -> void:
 
 func set_containers(sources: Array = []) -> void:
     provided = inputs.keys().filter(sources.has)
-    dependent = inputs.keys().filter(func(n): return !provided.has(n) && _is_material(inputs[n]))
+    dependent = inputs.keys().filter(func(n): return !provided.has(n) && _is_allocatable(inputs[n]))
     for name in provided:
         icdata.erase(name)
     for name in dependent:
@@ -51,14 +50,30 @@ func get_demand() -> float:
         return 0.0
     if role == STMWindowRoles.STM_MANAGER:
         return window.demand
-    return get_min_prod()*get_goal()
+    if "goal" in window:
+        return get_min_prod() * window.goal
+    if !dependent.is_empty():
+        return dependent.reduce(func(acc, n): return acc + icdata[n].get_required(), 0.0)
+    # Single-input windows (e.g. Thread Manager): use required, then constant fallback.
+    # Do NOT use count as demand proxy — it creates a feedback loop in Graph mode.
+    var _req = provided.reduce(func(acc, n): return acc + (inputs[n].required if "required" in inputs[n] else 0.0), 0.0)
+    if !is_zero_approx(_req):
+        return _req
+    return 1.0
 
 func get_count_demand() -> float:
     if provided.is_empty():
         return 0.0
     if role == STMWindowRoles.STM_MANAGER:
         return window.demand
-    return get_min_count()*get_goal()
+    if "goal" in window:
+        return get_min_count() * window.goal
+    if !dependent.is_empty():
+        return dependent.reduce(func(acc, n): return acc + icdata[n].get_required(), 0.0)
+    var _req = provided.reduce(func(acc, n): return acc + (inputs[n].required if "required" in inputs[n] else 0.0), 0.0)
+    if !is_zero_approx(_req):
+        return _req
+    return 1.0
 
 func set_count(value: float) -> void:
     var size = provided.size()
@@ -81,16 +96,17 @@ func get_min_count() -> float:
 
 
 func get_goal() -> float:
-    return window.goal if role == STMWindowRoles.STM_CONSUMER else 0.0
+    return window.goal if ("goal" in window && role == STMWindowRoles.STM_CONSUMER) else 0.0
 
 func update():
     for cd in icdata.values():
         cd.update()
 
-func _is_material(c: ResourceContainer) -> bool:
+func _is_allocatable(c: ResourceContainer) -> bool:
     if "type" not in c:
-        return false
-    return c.type == Utils.resource_types.MATERIAL || c.type == Utils.resource_types.MATERIAL_LIMITED
+        return "required" in c
+    var t = c.type
+    return t == Utils.resource_types.MATERIAL || t == Utils.resource_types.MATERIAL_LIMITED || "required" in c
 
 
 class STMContainerData extends RefCounted:
@@ -108,6 +124,9 @@ class STMContainerData extends RefCounted:
     func get_count() -> float:
         var cnt: float = container.count if "count" in container else 0.0
         return multiplier * cnt
+
+    func get_required() -> float:
+        return container.required if "required" in container else 0.0
 
     func _get_multi() -> float:
         var req: float = container.required if "required" in container else 1.0

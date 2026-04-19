@@ -69,6 +69,8 @@ func tick() -> void:
 
     _update_state_tick()
 
+
+
     var _count: float = count if "count" in self else 0.0
     distribution_callable.call(_count, state)
 
@@ -129,7 +131,7 @@ func _update_wdata(target_inputs: Array, wdata: Dictionary):
             .filter(func(w): return w!=null)
 
     var ids = target_inputs\
-            .map(func(rc: ResourceContainer): return rc.id)
+            .map(func(rc: ResourceContainer): return rc.id if "id" in rc else str(rc.get_instance_id()))
 
     for window in windows:
         wdata\

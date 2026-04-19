@@ -53,7 +53,6 @@ func _ready() -> void:
 
 func process(delta: float) -> void :
     output.count = input.count
-    print("[STM-DIAG] process: input.count=%.2f, output.demand=%.2f" % [input.count, output.demand])
     var effective_demand = demand if !is_zero_approx(demand) else input.count
     var progress_value = clampf(input.count / effective_demand, 0.0, 1.0) if !is_zero_approx(effective_demand) else 0.0
     progress_bar.value = lerpf(progress_bar.min_value, progress_bar.max_value, progress_value)
