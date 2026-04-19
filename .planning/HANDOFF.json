@@ -1,0 +1,64 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-19T14:19:34Z",
+  "phase": "02",
+  "phase_name": "verify-debug",
+  "phase_dir": ".planning/phases/02-verify-debug",
+  "plan": 2,
+  "task": 2,
+  "total_tasks": 3,
+  "status": "paused",
+  "completed_tasks": [
+    {"id": "02-01", "name": "Manifest update + baseline test", "status": "done", "commit": null},
+    {"id": "02-02-T1", "name": "Add diagnostics to both mods, repackage, install", "status": "done", "commit": null},
+    {"id": "02-02-T2", "name": "Capture diagnostic output + identify root cause", "status": "done", "commit": null},
+    {"id": "02-02-FIX", "name": "Apply connection_out_set fix + tick fallback to both mods", "status": "done", "commit": null}
+  ],
+  "remaining_tasks": [
+    {"id": "02-02-VISUAL", "name": "Confirm in-game visual: STM shows ~2.6GHz split to each downstream window", "status": "human_pending"},
+    {"id": "02-03-T1", "name": "Remove diagnostics, add compat shims to smart_resource_container.gd + stm_window_data.gd (both mods)", "status": "not_started"},
+    {"id": "02-03-T2", "name": "Repackage and install both mods with shims", "status": "not_started"},
+    {"id": "02-03-T3", "name": "Full 14-point in-game verification (7 conditions x 2 mods)", "status": "not_started"}
+  ],
+  "blockers": [
+    {
+      "description": "In-game visual confirmation pending: user has not yet reported whether downstream Thread Manager windows show non-zero split values after the connection_out_set fix",
+      "type": "human_action",
+      "workaround": "Diagnostic logs confirm transfer=2 and wdata populated; distribution math path for STM_STORAGE (equal split) is correct. Likely working but unconfirmed visually."
+    }
+  ],
+  "human_actions_pending": [
+    {
+      "action": "Launch game with current installed ZIPs. Place STM with 2 downstream Thread Manager windows. Report: do downstream windows show ~2.6GHz each (or any non-zero split)?",
+      "context": "Last diagnostic log showed transfer=2, wdata populated, demands={0.0, 0.0}. Thread Manager windows classify as STM_STORAGE (role=2) -- they get equal-split overflow via _set_storages(). Visual confirmation is the last unknown before Plan 02-03.",
+      "blocking": true
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Use connection_out_set signal + tick-time fallback to call update_connections()",
+      "rationale": "game engine's _on_create_connection() was not reaching our GDScript override; BetterSplitters reference mod uses connection_out_set directly",
+      "phase": "02"
+    },
+    {
+      "decision": "Thread Manager downstream windows classify as STM_STORAGE (not STM_CONSUMER)",
+      "rationale": "clock_speed is FLOW type (type=1), not MATERIAL. STM_CONSUMER requires material inputs + goal property. Thread Managers have dependent=[] so equal-split via _set_storages() is correct for ratio mode.",
+      "phase": "02"
+    },
+    {
+      "decision": "Use .NET ZipArchive with forward-slash path replacement for packaging",
+      "rationale": "Compress-Archive on Windows produces backslash paths; Godot mod loader requires forward-slash paths in ZIP entries",
+      "phase": "01"
+    }
+  ],
+  "uncommitted_files": [
+    "Smrt Thread Manager/mods-unpacked/kuuk-SmartThreadManager/scripts/smart_resource_container.gd",
+    "Smrt GPU Manager/mods-unpacked/kuuk-SmartGPUManager/scripts/smart_resource_container.gd",
+    "Smrt Thread Manager/kuuk-SmartThreadManager.zip",
+    "Smrt GPU Manager/kuuk-SmartGPUManager.zip",
+    ".planning/STATE.md",
+    ".planning/config.json"
+  ],
+  "next_action": "Ask user: did the downstream Thread Manager windows show non-zero split (~2.6GHz each) after the fix? Then proceed with Plan 02-03: remove diagnostics, add compat shims, repackage, full 14-point verification.",
+  "context_notes": "The connection_out_set fix is the core breakthrough. transfer went from 0 to 2. wdata populates correctly. demands=0 is expected (STM_STORAGE windows have no goal, so demand=0 and equal-split applies). The only open question is whether the game UI reflects the split visually. Once confirmed, Plan 02-03 is straightforward: strip prints, add has()/get() guards per the plan spec, repackage, verify."
+}
