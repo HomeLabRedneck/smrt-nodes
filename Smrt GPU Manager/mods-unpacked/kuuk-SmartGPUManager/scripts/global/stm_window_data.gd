@@ -25,18 +25,6 @@ func _init(window: WindowBase) -> void:
 
     set_containers()
 
-    if "demand" in window:
-        role = STMWindowRoles.STM_MANAGER
-    #dependent.is_empty() is a temporary solution so miners will work
-    elif "goal" in window && !dependent.is_empty():
-        role = STMWindowRoles.STM_CONSUMER
-    elif window.is_in_group("window"):
-        role = STMWindowRoles.STM_STORAGE
-    else:
-        role = STMWindowRoles.STM_ARTIFACT
-
-
-
 func set_containers(sources: Array = []) -> void:
     provided = inputs.keys().filter(sources.has)
     dependent = inputs.keys().filter(func(n): return !provided.has(n) && _is_material(inputs[n]))
@@ -45,20 +33,38 @@ func set_containers(sources: Array = []) -> void:
     for name in dependent:
         if !icdata.has(name):
             icdata[name] = STMContainerData.new(inputs[name])
+    if "demand" in window:
+        role = STMWindowRoles.STM_MANAGER
+    elif !provided.is_empty():
+        role = STMWindowRoles.STM_CONSUMER
+    elif window.is_in_group("window"):
+        role = STMWindowRoles.STM_STORAGE
+    else:
+        role = STMWindowRoles.STM_ARTIFACT
 
 func get_demand() -> float:
     if provided.is_empty():
         return 0.0
     if role == STMWindowRoles.STM_MANAGER:
         return window.demand
-    return get_min_prod()*get_goal()
+    if "goal" in window && !dependent.is_empty():
+        return get_min_prod() * window.goal
+    var _req = provided.reduce(func(acc, n): return acc + (inputs[n].required if "required" in inputs[n] else 0.0), 0.0)
+    if !is_zero_approx(_req):
+        return _req
+    return 1.0
 
 func get_count_demand() -> float:
     if provided.is_empty():
         return 0.0
     if role == STMWindowRoles.STM_MANAGER:
         return window.demand
-    return get_min_count()*get_goal()
+    if "goal" in window && !dependent.is_empty():
+        return get_min_count() * window.goal
+    var _req = provided.reduce(func(acc, n): return acc + (inputs[n].required if "required" in inputs[n] else 0.0), 0.0)
+    if !is_zero_approx(_req):
+        return _req
+    return 1.0
 
 func set_count(value: float) -> void:
     var size = provided.size()
