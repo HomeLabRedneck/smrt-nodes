@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-20T00:00:00Z",
+  "phase": "02",
+  "phase_name": "verify-debug",
+  "phase_dir": ".planning/phases/02-verify-debug",
+  "plan": 3,
+  "task": 3,
+  "total_tasks": 3,
+  "status": "paused",
+  "completed_tasks": [
+    {"id": "phase-02-all", "name": "Phase 02 fully verified — all 14 conditions passed", "status": "done", "commit": "b385d40"},
+    {"id": "sgm-consumer-fix", "name": "SGM consumer classification fix — demand/graph modes for pure-gpu windows", "status": "done", "commit": "82add79"}
+  ],
+  "remaining_tasks": [
+    {"id": "sgm-verify-demand", "name": "In-game: verify SGM demand mode gives proportional shares between Miner and Scheduler (not equal)", "status": "not_started"},
+    {"id": "sgm-verify-graph", "name": "In-game: verify SGM graph mode shows real demand Hz after fix", "status": "not_started"},
+    {"id": "sgm-summary-update", "name": "Update 02-03-SUMMARY.md with SGM consumer fix details if verified", "status": "not_started"}
+  ],
+  "blockers": [
+    {
+      "description": "SGM consumer fix needs in-game verification — Miner and Scheduler must show different allocation in Demand mode",
+      "type": "human_action",
+      "workaround": "none"
+    }
+  ],
+  "human_actions_pending": [
+    {
+      "action": "Relaunch Upload Labs. Connect SGM to Miner + Scheduler. Switch to Demand mode. Confirm: do Miner and Scheduler receive DIFFERENT amounts of gpu_speed (proportional to their required values), not equal?",
+      "context": "Fix applied in 82add79: SGM stm_window_data.gd now classifies windows as STM_CONSUMER when !provided.is_empty() (was: required dependent non-STM inputs). get_demand() now falls back to provided container required value. Role re-evaluated in set_containers() so it updates when STM connections arrive.",
+      "blocking": true
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "SGM consumer classification changed to !provided.is_empty() — any window receiving from SGM is a consumer",
+      "rationale": "Pure gpu_speed windows (Miner, Scheduler) have no other resource inputs, so dependent=[] always. Old classification (requires dependent non-STM inputs) meant they were always STORAGE -> equal distribution in all modes. New classification uses provided container required value as demand proxy.",
+      "phase": "02"
+    },
+    {
+      "decision": "STM left unchanged — STM working correctly with Virus Scanner and Quarantine (multi-resource windows)",
+      "rationale": "User confirmed STM works. STM downstream windows have other resource inputs -> dependent populated -> correct consumer classification already.",
+      "phase": "02"
+    },
+    {
+      "decision": "Role re-evaluated in set_containers() not _init() for SGM",
+      "rationale": "provided is empty at _init() time (no sources passed). If role set at init with !provided.is_empty(), all windows start as STORAGE. Moving role assignment to set_containers() means it re-evaluates when actual connection IDs arrive.",
+      "phase": "02"
+    }
+  ],
+  "uncommitted_files": [],
+  "next_action": "Ask user: did SGM Demand mode give Miner and Scheduler DIFFERENT gpu_speed amounts after relaunch? If yes, update 02-03-SUMMARY.md and mark complete.",
+  "context_notes": "Phase 02 is functionally complete. STM fully verified. SGM had a secondary bug: consumer classification required dependent (non-STM) inputs, but GPU windows only have gpu_speed input -> always STORAGE -> demand/graph = ratio always. Fix applied and installed (18605 bytes ZIP). Verification pending."
+}
