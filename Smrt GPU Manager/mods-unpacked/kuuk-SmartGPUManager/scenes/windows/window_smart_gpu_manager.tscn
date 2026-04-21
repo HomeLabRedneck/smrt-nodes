@@ -1,10 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://wocawew6ut7h"]
+[gd_scene load_steps=21 format=3 uid="uid://wocawew6ut7h"]
 
 [ext_resource type="PackedScene" uid="uid://b46qouyu3lx2m" path="res://scenes/windows/window_base.tscn" id="1_4h3qf"]
 [ext_resource type="Script" uid="uid://bsc4mrf5txn1s" path="res://mods-unpacked/kuuk-SmartGPUManager/scenes/windows/window_smart_gpu_manager.gd" id="2_xeqvc"]
 [ext_resource type="Texture2D" uid="uid://mbrbl6fxx1" path="res://textures/icons/brain.png" id="3_jjcgv"]
 [ext_resource type="PackedScene" uid="uid://co5icrrrwscgg" path="res://scenes/input_container.tscn" id="4_2prua"]
-[ext_resource type="Texture2D" uid="uid://e07j7tof5wcq" path="res://mods-unpacked/kuuk-SmartGPUManager/textures/1x1.png" id="4_skhyp"]
 [ext_resource type="PackedScene" uid="uid://b4efojcll7i7" path="res://scenes/output_container.tscn" id="5_lcoeh"]
 [ext_resource type="Script" uid="uid://cbf3jbt2xle1n" path="res://mods-unpacked/kuuk-SmartGPUManager/scripts/option_desktop_button.gd" id="6_1lpg8"]
 [ext_resource type="FontVariation" uid="uid://o1lo3q4dynmn" path="res://themes/fonts/main.tres" id="8_mgogo"]
@@ -116,14 +115,9 @@ PopupMenu/colors/font_disabled_color = Color(0.27058825, 0.33333334, 0.45882353,
 PopupMenu/colors/font_hover_color = Color(1, 0.52156866, 0, 1)
 PopupMenu/colors/font_separator_color = Color(1, 0.52156866, 0, 1)
 PopupMenu/colors/title_color = Color(0.8509804, 0.96862745, 1, 1)
-PopupMenu/icons/radio_checked = ExtResource("4_skhyp")
-PopupMenu/icons/radio_checked_disabled = ExtResource("4_skhyp")
-PopupMenu/icons/radio_unchecked = ExtResource("4_skhyp")
-PopupMenu/icons/radio_unchecked_disabled = ExtResource("4_skhyp")
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_h6jll")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_y7j2n")
 stmOptionButton/base_type = &"OptionButton"
-stmOptionButton/icons/arrow = ExtResource("4_skhyp")
 stmOptionButton/styles/focus = SubResource("StyleBoxFlat_jbbn5")
 stmOptionButton/styles/hover = SubResource("StyleBoxFlat_quws3")
 stmOptionButton/styles/normal = SubResource("StyleBoxFlat_1axda")
