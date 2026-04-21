@@ -49,6 +49,8 @@ func get_demand() -> float:
         return window.demand
     if "goal" in window && !dependent.is_empty():
         return get_min_prod() * window.goal
+    if "goal" in window:
+        return window.goal
     var _req = provided.reduce(func(acc, n): return acc + (inputs[n].required if "required" in inputs[n] else 0.0), 0.0)
     if !is_zero_approx(_req):
         return _req
@@ -61,6 +63,8 @@ func get_count_demand() -> float:
         return window.demand
     if "goal" in window && !dependent.is_empty():
         return get_min_count() * window.goal
+    if "goal" in window:
+        return window.goal
     var _req = provided.reduce(func(acc, n): return acc + (inputs[n].required if "required" in inputs[n] else 0.0), 0.0)
     if !is_zero_approx(_req):
         return _req
