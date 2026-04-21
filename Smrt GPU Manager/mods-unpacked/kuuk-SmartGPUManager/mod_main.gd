@@ -41,7 +41,7 @@ func _add_to_data() -> void:
     
     if !Data.windows.has(entry_name):
         Data.windows[entry_name] = {
-            "name": node_name,
+            "name": "Smart GPU Manager",
             "icon": "brain",
             "description": "window_sgm_desc",
             "scene": windows_dir_path.path_join(node_name),
