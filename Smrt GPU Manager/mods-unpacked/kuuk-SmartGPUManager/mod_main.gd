@@ -49,7 +49,7 @@ func _add_to_data() -> void:
             "category": "gpu",
             "sub_category": "management",
             "level": 0,
-            "requirement": "perk.gpu_manager",
+            "requirement": "perk.thread_manager",
             "hidden": true,
             "attributes":{
                 "limit": -1
@@ -65,11 +65,11 @@ func _add_to_data() -> void:
             "icon": "brain",
             "type": 1,
             "entries":[
-                {"text": "guide_"+node_name, "level": 0, "requirement": "perk.gpu_manager"},
-                {"text": "guide_"+node_name+"_chaining", "level": 0, "requirement": "perk.gpu_manager"},
-                {"text": "guide_"+node_name+"_ratio", "level": 0, "requirement": "perk.gpu_manager"},
-                {"text": "guide_"+node_name+"_demand", "level": 0, "requirement": "perk.gpu_manager"},
-                {"text": "guide_"+node_name+"_graph", "level": 0, "requirement": "perk.gpu_manager"},
+                {"text": "guide_"+node_name, "level": 0, "requirement": "perk.thread_manager"},
+                {"text": "guide_"+node_name+"_chaining", "level": 0, "requirement": "perk.thread_manager"},
+                {"text": "guide_"+node_name+"_ratio", "level": 0, "requirement": "perk.thread_manager"},
+                {"text": "guide_"+node_name+"_demand", "level": 0, "requirement": "perk.thread_manager"},
+                {"text": "guide_"+node_name+"_graph", "level": 0, "requirement": "perk.thread_manager"},
             ]
         }
     else:
