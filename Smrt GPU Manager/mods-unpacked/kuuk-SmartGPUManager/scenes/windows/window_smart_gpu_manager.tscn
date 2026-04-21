@@ -132,7 +132,7 @@ window = "smart_gpu_manager"
 texture = ExtResource("3_jjcgv")
 
 [node name="Title" parent="TitlePanel/TitleContainer" index="1"]
-text = "Auto Allocator"
+text = "Smart GPU Manager"
 
 [node name="OptionButton" type="OptionButton" parent="." index="1"]
 layout_mode = 2
@@ -158,7 +158,7 @@ theme_override_constants/separation = 10
 
 [node name="Input" parent="PanelContainer/MainContainer" index="0" node_paths=PackedStringArray("exporting") instance=ExtResource("4_2prua")]
 layout_mode = 2
-default_resource = "clock_speed"
+default_resource = "gpu_speed"
 limit = -1.0
 exporting = [NodePath("../Output")]
 
@@ -197,7 +197,7 @@ layout_mode = 2
 script = ExtResource("9_jbbn5")
 use_count = false
 distribution_mode = 0
-default_resource = "clock_speed"
+default_resource = "gpu_speed"
 limit = -1.0
 
 [node name="UseCountButton" type="Button" parent="PanelContainer/MainContainer" index="3"]
