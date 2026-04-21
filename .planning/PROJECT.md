@@ -2,9 +2,9 @@
 
 ## What This Is
 
-Fix two broken Upload Labs mods — **SmartThreadManager** and **SmartGPUManager** — so they work with game version 2.1.10. Both mods were authored by `kuuk` and published on Steam Workshop. They provide "smart" auto-distribution of CPU thread speed and GPU speed respectively, letting players set up automatic load-balancing across connected windows.
+Fix two broken Upload Labs mods — **SmartThreadManager** and **SmartGPUManager** — so they work with game version 2.1.11. Both mods were authored by `kuuk` and published on Steam Workshop. They provide "smart" auto-distribution of CPU thread speed and GPU speed respectively, letting players set up automatic load-balancing across connected windows.
 
-**Core value:** Both mods load, render, and accept connections in 2.1.10 — but the distribution logic does nothing. The fix restores the actual smart-allocation behavior.
+**Core value:** Both mods load, render, and accept connections in 2.1.11 — but the distribution logic does nothing. The fix restores the actual smart-allocation behavior.
 
 ## Context
 
