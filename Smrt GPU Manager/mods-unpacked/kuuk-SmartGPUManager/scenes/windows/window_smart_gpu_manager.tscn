@@ -126,7 +126,7 @@ stmOptionButton/styles/pressed = SubResource("StyleBoxFlat_vv18v")
 [node name="WindowBase" instance=ExtResource("1_4h3qf")]
 offset_bottom = 50.0
 script = ExtResource("2_xeqvc")
-window = "smart_thread_manager"
+window = "smart_gpu_manager"
 
 [node name="Icon" parent="TitlePanel/TitleContainer" index="0"]
 texture = ExtResource("3_jjcgv")
