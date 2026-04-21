@@ -142,7 +142,23 @@ All 14 conditions passed (2026-04-19).
 | 13 | SGM Single downstream | ✅ | Gets 100% |
 | 14 | SGM Empty graph | ✅ | No crash |
 
-**Behavior note:** Demand and Graph modes distribute equally when downstream windows have only ONE resource input (all from STM). This is correct — those windows are classified `STM_STORAGE` and receive equal shares of remainder. Modes differentiate when windows have additional non-STM resource dependencies (e.g. Virus Scanner, Quarantine for STM).
+**Behavior note:** Demand and Graph modes differentiate only when supply < total demand. With abundant supply all modes converge (each window gets exactly its demand). Modes diverge visibly under GPU scarcity.
+
+---
+
+## SGM Post-Verification Fixes (2026-04-21)
+
+Additional bugs found during first real in-game SGM test.
+
+| Commit | Fix |
+|--------|-----|
+| b071c6e | `window = "smart_thread_manager"` → `"smart_gpu_manager"` in scene — game used wrong Data.windows entry |
+| 2f4c2f5 | `perk.gpu_manager` → `perk.thread_manager` — gpu_manager perk never evaluates true; window permanently locked |
+| ee68909 | `default_resource = "clock_speed"` → `"gpu_speed"` on Input+Output; title `"Auto Allocator"` → `"Smart GPU Manager"` |
+| 1b961ae | `"name": node_name` → `"name": "Smart GPU Manager"` — translation binary broken, raw key shown as title |
+| 4b16966 | `get_demand()`/`get_count_demand()`: add `window.goal` fallback for pure-GPU windows (no material inputs) — `required` not set on speed containers → was always 1.0 → equal allocation |
+
+**Verified 2026-04-21:** SGM creatable, GPU connections work, name correct, demand mode gives goal-proportional unequal allocation to Miner+Scheduler.
 
 ---
 
